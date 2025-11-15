@@ -366,7 +366,7 @@ class _ScannerScreenState extends State<ScannerScreen>
           ),
           // Bottom controls - positioned at bottom of screen
           Positioned(
-            bottom: 100,
+            bottom: 60,
             left: 0,
             right: 0,
             child: Column(
@@ -383,19 +383,6 @@ class _ScannerScreenState extends State<ScannerScreen>
                         Colors.black.withOpacity(0.7),
                         Colors.white,
                         () => _showManualInputDialog(),
-                      ),
-                      _buildBottomButton(
-                        Icons.layers,
-                        Colors.black.withOpacity(0.7),
-                        Colors.white,
-                        () {
-                          // Show scan history
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Check History tab for scanned items'),
-                            ),
-                          );
-                        },
                       ),
                       _buildBottomButton(
                         Icons.image,
