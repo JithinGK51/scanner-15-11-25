@@ -365,34 +365,75 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
   Future<void> _handleOpen(String data) async {
     Navigator.pop(context);
     if (Helpers.isValidURL(data)) {
-      final launched = await Helpers.launchURL(data);
-      if (!launched && mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          title: 'Error',
-          desc: 'Could not open URL',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(data);
+        if (!launched && mounted) {
+          _showErrorDialog('Could not open URL. Please check if the URL is valid or try again.');
+        }
+      } catch (e) {
+        if (mounted) {
+          _showErrorDialog('Could not open URL. Please check if the URL is valid or try again.');
+        }
       }
     } else if (Helpers.isUPI(data)) {
-      final launched = await Helpers.launchURL(data);
-      if (!launched && mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.info,
-          title: 'UPI Payment',
-          desc: 'Please use a UPI app to process this payment',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(data);
+        if (!launched && mounted) {
+          _showInfoDialog('UPI Payment', 'Please use a UPI app to process this payment');
+        }
+      } catch (e) {
+        if (mounted) {
+          _showInfoDialog('UPI Payment', 'Please use a UPI app to process this payment');
+        }
       }
     } else {
       if (!mounted) return;
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.info,
-        title: 'Text Content',
-        desc: data,
-      ).show();
+      _showInfoDialog('Text Content', data);
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 28),
+            SizedBox(width: 12),
+            Text('Error', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _handleCopy(String data) async {

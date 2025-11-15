@@ -305,34 +305,75 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
   Future<void> _handleOpen(String data) async {
     Navigator.pop(context);
     if (Helpers.isValidURL(data)) {
-      final launched = await Helpers.launchURL(data);
-      if (!launched && mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          title: 'Error',
-          desc: 'Could not open URL',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(data);
+        if (!launched && mounted) {
+          _showErrorDialog('Could not open URL. Please check if the URL is valid or try again.');
+        }
+      } catch (e) {
+        if (mounted) {
+          _showErrorDialog('Could not open URL. Please check if the URL is valid or try again.');
+        }
       }
     } else if (Helpers.isUPI(data)) {
-      final launched = await Helpers.launchURL(data);
-      if (!launched && mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.info,
-          title: 'UPI Payment',
-          desc: 'Please use a UPI app to process this payment',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(data);
+        if (!launched && mounted) {
+          _showInfoDialog('UPI Payment', 'Please use a UPI app to process this payment');
+        }
+      } catch (e) {
+        if (mounted) {
+          _showInfoDialog('UPI Payment', 'Please use a UPI app to process this payment');
+        }
       }
     } else {
       if (!mounted) return;
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.info,
-        title: 'Text Content',
-        desc: data,
-      ).show();
+      _showInfoDialog('Text Content', data);
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 28),
+            SizedBox(width: 12),
+            Text('Error', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _handleCopy(String data) async {
@@ -366,8 +407,8 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           // Camera view
@@ -375,23 +416,12 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
             controller: _controller,
             onDetect: _handleBarcode,
           ),
-          // Overlay with glow effect
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.center,
-                radius: 0.8,
-                colors: [
-                  Colors.transparent,
-                  isDark
-                      ? Colors.black.withValues(alpha: 0.3)
-                      : Colors.white.withValues(alpha: 0.1),
-                ],
-              ),
-            ),
-          ),
-          // Corner borders
-          _buildCornerBorders(isDark),
+          // Dark overlay with scanning area cutout
+          _buildOverlay(),
+          // Central scanning frame with rounded corners
+          _buildScanningFrame(),
+          // Blue dot in center
+          _buildCenterDot(),
           // Top controls
           SafeArea(
             child: Padding(
@@ -399,60 +429,74 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
+                  _buildControlButton(
+                    icon: Icons.cameraswitch,
                     onPressed: _switchCamera,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isDark
-                          ? const Color(0xFF2D2D2D)
-                          : const Color(0xFFFFFFFF),
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(12.0),
-                      elevation: 8,
-                    ),
-                    child: const Icon(Icons.cameraswitch, color: Colors.white),
                   ),
-                  ElevatedButton(
+                  _buildControlButton(
+                    icon: _isTorchOn ? Icons.flash_on : Icons.flash_off,
                     onPressed: _toggleTorch,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isDark
-                          ? const Color(0xFF2D2D2D)
-                          : const Color(0xFFFFFFFF),
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(12.0),
-                      elevation: 8,
-                    ),
-                    child: Icon(
-                      _isTorchOn ? Icons.flash_on : Icons.flash_off,
-                      color: Colors.white,
-                    ),
                   ),
                 ],
               ),
             ),
           ),
-          // Bottom gallery button
+          // Bottom controls
           Positioned(
-            bottom: 100,
+            bottom: 0,
             left: 0,
             right: 0,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // This will be handled by bottom navigation
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isDark
-                      ? const Color(0xFF2D2D2D)
-                      : const Color(0xFFFFFFFF),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(0),
-                  minimumSize: const Size(70, 70),
-                  elevation: 12,
-                ),
-                child: Icon(
-                  Icons.photo_library,
-                  color: AppTheme.primaryColor,
-                  size: 32,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // First row: Edit and Torch buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildBottomControlButton(
+                          icon: Icons.edit,
+                          onPressed: () {
+                            // Manual input functionality
+                          },
+                        ),
+                        _buildBottomControlButton(
+                          icon: _isTorchOn ? Icons.flash_on : Icons.flash_off,
+                          onPressed: _toggleTorch,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Large capture button
+                    _buildCaptureButton(),
+                    const SizedBox(height: 20),
+                    // Third row: Keyboard, Layers, Gallery
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildBottomControlButton(
+                          icon: Icons.keyboard,
+                          onPressed: () {
+                            // Keyboard input
+                          },
+                        ),
+                        _buildBottomControlButton(
+                          icon: Icons.layers,
+                          onPressed: () {
+                            // Layers functionality
+                          },
+                        ),
+                        _buildBottomControlButton(
+                          icon: Icons.photo_library,
+                          onPressed: () {
+                            // Gallery functionality
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -462,95 +506,166 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
     );
   }
 
-  Widget _buildCornerBorders(bool isDark) {
-    return Stack(
-      children: [
-        // Top left
-        Positioned(
-          top: 100,
-          left: 50,
+  Widget _buildOverlay() {
+    return CustomPaint(
+      painter: ScannerOverlayPainter(),
+    );
+  }
+
+  Widget _buildScanningFrame() {
+    return Center(
+      child: Container(
+        width: 280,
+        height: 280,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: AppTheme.primaryColor.withOpacity(0.8),
+            width: 2,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenterDot() {
+    return Center(
+      child: Container(
+        width: 8,
+        height: 8,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppTheme.primaryColor,
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryColor.withOpacity(0.8),
+              blurRadius: 12,
+              spreadRadius: 4,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildControlButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withOpacity(0.2),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Colors.white, size: 24),
+        padding: const EdgeInsets.all(12),
+      ),
+    );
+  }
+
+  Widget _buildBottomControlButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withOpacity(0.15),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Colors.white, size: 24),
+      ),
+    );
+  }
+
+  Widget _buildCaptureButton() {
+    return GestureDetector(
+      onTap: () {
+        // Capture/scan action
+      },
+      child: Container(
+        width: 72,
+        height: 72,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppTheme.primaryColor,
+          border: Border.all(
+            color: Colors.white,
+            width: 4,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryColor.withOpacity(0.5),
+              blurRadius: 20,
+              spreadRadius: 4,
+            ),
+          ],
+        ),
+        child: Center(
           child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-                left: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-              ),
+            width: 12,
+            height: 12,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
             ),
           ),
         ),
-        // Top right
-        Positioned(
-          top: 100,
-          right: 50,
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-                right: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-              ),
-            ),
-          ),
-        ),
-        // Bottom left
-        Positioned(
-          bottom: 200,
-          left: 50,
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-                left: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-              ),
-            ),
-          ),
-        ),
-        // Bottom right
-        Positioned(
-          bottom: 200,
-          right: 50,
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-                right: BorderSide(
-                  color: AppTheme.neonBlue,
-                  width: 4,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
 
+class ScannerOverlayPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black.withOpacity(0.75)
+      ..style = PaintingStyle.fill;
+
+    // Draw dark overlay covering entire screen
+    final overlayPath = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    // Cut out scanning area (center square with rounded corners)
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+    final scanSize = 280.0;
+    final scanRect = RRect.fromRectAndRadius(
+      Rect.fromCenter(
+        center: Offset(centerX, centerY),
+        width: scanSize,
+        height: scanSize,
+      ),
+      const Radius.circular(24),
+    );
+
+    final cutoutPath = Path()
+      ..addRRect(scanRect);
+
+    // Use PathOperation to cut out the scanning area
+    final combinedPath = Path.combine(
+      PathOperation.difference,
+      overlayPath,
+      cutoutPath,
+    );
+
+    canvas.drawPath(combinedPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
