@@ -39,7 +39,6 @@ dependencies:
   convex_bottom_bar: ^3.0.0
   awesome_dialog: ^3.1.1
   flutter_spinkit: ^5.2.1
-  flutter_neumorphic: ^3.2.0
   
   # Scanner Packages
   mobile_scanner: ^5.2.3
