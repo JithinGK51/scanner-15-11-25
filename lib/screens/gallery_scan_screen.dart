@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -145,15 +145,19 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) => Neumorphic(
-        style: NeumorphicStyle(
-          shape: NeumorphicShape.flat,
-          boxShape: NeumorphicBoxShape.roundRect(
-            const BorderRadius.vertical(top: Radius.circular(30)),
-          ),
-          depth: 20,
-          intensity: 0.8,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -211,69 +215,61 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleOpen(_scannedData!),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.open_in_new, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Open',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.open_in_new, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Open',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleCopy(_scannedData!),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.copy, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Copy',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.copy, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Copy',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -283,41 +279,37 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleShare(_scannedData!),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.share, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Share',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.share, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Share',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -335,33 +327,29 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
                           ),
                         );
                       },
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.visibility, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Details',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.visibility, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Details',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -457,58 +445,58 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                NeumorphicButton(
+                ElevatedButton(
                   onPressed: _isScanning ? null : _pickImage,
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(30),
-                    ),
-                    depth: 20,
-                    intensity: 0.8,
-                    color: isDark
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
-                  ),
-                  child: Container(
+                    foregroundColor: AppTheme.primaryColor,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 48,
                       vertical: 24,
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.photo_library,
-                          size: 32,
-                          color: AppTheme.primaryColor,
-                        ),
-                        const SizedBox(width: 16),
-                        Text(
-                          'Pick Image From Gallery',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                      ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
+                    elevation: 20,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.photo_library,
+                        size: 32,
+                        color: AppTheme.primaryColor,
+                      ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        'Pick Image From Gallery',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 40),
                 if (_selectedImage != null) ...[
-                  Neumorphic(
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        BorderRadius.circular(20),
-                      ),
-                      depth: 12,
-                      intensity: 0.8,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                       color: isDark
                           ? const Color(0xFF2D2D2D)
                           : const Color(0xFFFFFFFF),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDark
+                              ? Colors.black.withOpacity(0.3)
+                              : Colors.grey.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -524,15 +512,28 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
                   if (_isScanning)
                     const CircularProgressIndicator()
                   else if (_scannedData != null)
-                    NeumorphicText(
-                      'Code detected!',
-                      style: NeumorphicStyle(
-                        depth: 4,
-                        color: isDark ? Colors.green : Colors.green,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xFF2D2D2D)
+                            : const Color(0xFFFFFFFF),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.3),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      textStyle: const NeumorphicTextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      child: const Text(
+                        'Code detected!',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
                       ),
                     ),
                 ],
@@ -545,49 +546,4 @@ class _GalleryScanScreenState extends State<GalleryScanScreen> {
   }
 }
 
-// NeumorphicText widget
-class NeumorphicText extends StatelessWidget {
-  final String text;
-  final NeumorphicStyle style;
-  final NeumorphicTextStyle textStyle;
-
-  const NeumorphicText(
-    this.text, {
-    super.key,
-    required this.style,
-    required this.textStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Neumorphic(
-      style: style,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: textStyle.fontSize,
-            fontWeight: textStyle.fontWeight,
-            letterSpacing: textStyle.letterSpacing,
-            color: style.color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// NeumorphicTextStyle helper
-class NeumorphicTextStyle {
-  final double fontSize;
-  final FontWeight fontWeight;
-  final double letterSpacing;
-
-  const NeumorphicTextStyle({
-    required this.fontSize,
-    required this.fontWeight,
-    this.letterSpacing = 0,
-  });
-}
 

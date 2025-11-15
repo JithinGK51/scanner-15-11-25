@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:barcode/barcode.dart' as barcode_lib;
@@ -144,15 +144,26 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return RepaintBoundary(
       key: _qrKey,
-      child: Neumorphic(
-        style: NeumorphicStyle(
-          shape: NeumorphicShape.convex,
-          boxShape: NeumorphicBoxShape.roundRect(
-            BorderRadius.circular(30),
-          ),
-          depth: 20,
-          intensity: 0.8,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
           color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(-5, -5),
+            ),
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(5, 5),
+            ),
+          ],
         ),
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -235,17 +246,21 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                 ),
                 const SizedBox(height: 32),
                 // Type dropdown
-                Neumorphic(
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(20),
-                    ),
-                    depth: -4,
-                    intensity: 0.8,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
                     color: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark
+                            ? Colors.black.withOpacity(0.2)
+                            : Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, -2),
+                      ),
+                    ],
                   ),
                   child: DropdownButtonFormField<String>(
                     value: _selectedType,
@@ -284,17 +299,21 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                 ),
                 const SizedBox(height: 24),
                 // Text input
-                Neumorphic(
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(20),
-                    ),
-                    depth: -4,
-                    intensity: 0.8,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
                     color: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark
+                            ? Colors.black.withOpacity(0.2)
+                            : Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, -2),
+                      ),
+                    ],
                   ),
                   child: TextField(
                     controller: _textController,
@@ -311,24 +330,23 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                 ),
                 const SizedBox(height: 24),
                 // Generate button
-                NeumorphicButton(
+                ElevatedButton(
                   onPressed: _isGenerating ? null : _generateCode,
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(20),
-                    ),
-                    depth: 12,
-                    intensity: 0.8,
-                    color: AppTheme.primaryColor,
-                  ),
-                  child: Container(
-                    width: double.infinity,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 12,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
                     child: Center(
                       child: _isGenerating
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(
+                          : const Text(
                               'Generate',
                               style: TextStyle(
                                 color: Colors.white,
@@ -348,105 +366,92 @@ class _GeneratorScreenState extends State<GeneratorScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: NeumorphicButton(
+                        child: ElevatedButton(
                           onPressed: _downloadAsImage,
-                          style: NeumorphicStyle(
-                            shape: NeumorphicShape.convex,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(15),
-                            ),
-                            depth: 8,
-                            intensity: 0.8,
-                            color: isDark
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isDark
                                 ? const Color(0xFF2D2D2D)
                                 : const Color(0xFFFFFFFF),
-                          ),
-                          child: Padding(
+                            foregroundColor: AppTheme.primaryColor,
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.download, color: AppTheme.primaryColor),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Download',
-                                  style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
+                            elevation: 8,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.download, color: AppTheme.primaryColor),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'Download',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: NeumorphicButton(
+                        child: ElevatedButton(
                           onPressed: _shareCode,
-                          style: NeumorphicStyle(
-                            shape: NeumorphicShape.convex,
-                            boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(15),
-                            ),
-                            depth: 8,
-                            intensity: 0.8,
-                            color: isDark
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isDark
                                 ? const Color(0xFF2D2D2D)
                                 : const Color(0xFFFFFFFF),
-                          ),
-                          child: Padding(
+                            foregroundColor: AppTheme.primaryColor,
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.share, color: AppTheme.primaryColor),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Share',
-                                  style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
+                            elevation: 8,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.share, color: AppTheme.primaryColor),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'Share',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  NeumorphicButton(
+                  ElevatedButton(
                     onPressed: _saveToHistory,
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        BorderRadius.circular(15),
-                      ),
-                      depth: 8,
-                      intensity: 0.8,
-                      color: isDark
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDark
                           ? const Color(0xFF2D2D2D)
                           : const Color(0xFFFFFFFF),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save, color: AppTheme.primaryColor),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Save to History',
-                            style: TextStyle(
-                              color: AppTheme.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      foregroundColor: AppTheme.primaryColor,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
+                      elevation: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.save, color: AppTheme.primaryColor),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Save to History',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

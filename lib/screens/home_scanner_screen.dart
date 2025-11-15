@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import '../models/scan_history_item.dart';
@@ -85,15 +85,19 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) => Neumorphic(
-        style: NeumorphicStyle(
-          shape: NeumorphicShape.flat,
-          boxShape: NeumorphicBoxShape.roundRect(
-            const BorderRadius.vertical(top: Radius.circular(30)),
-          ),
-          depth: 20,
-          intensity: 0.8,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF),
+          boxShadow: [
+            BoxShadow(
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -151,69 +155,61 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleOpen(data),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.open_in_new, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Open',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.open_in_new, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Open',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleCopy(data),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.copy, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Copy',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.copy, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Copy',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -223,41 +219,37 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () => _handleShare(data),
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.share, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Share',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.share, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Share',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: NeumorphicButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -275,33 +267,29 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
                           ),
                         );
                       },
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
-                      ),
-                      child: Padding(
+                        foregroundColor: AppTheme.primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.visibility, color: AppTheme.primaryColor),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Details',
-                              style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        elevation: 8,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.visibility, color: AppTheme.primaryColor),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Details',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -411,39 +399,31 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  NeumorphicButton(
+                  ElevatedButton(
                     onPressed: _switchCamera,
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.circle(),
-                      depth: 8,
-                      intensity: 0.8,
-                      color: isDark
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDark
                           ? const Color(0xFF2D2D2D)
                           : const Color(0xFFFFFFFF),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Icon(Icons.cameraswitch, color: Colors.white),
-                    ),
-                  ),
-                  NeumorphicButton(
-                    onPressed: _toggleTorch,
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.circle(),
-                      depth: 8,
-                      intensity: 0.8,
-                      color: isDark
-                          ? const Color(0xFF2D2D2D)
-                          : const Color(0xFFFFFFFF),
-                    ),
-                    child: Padding(
+                      shape: const CircleBorder(),
                       padding: const EdgeInsets.all(12.0),
-                      child: Icon(
-                        _isTorchOn ? Icons.flash_on : Icons.flash_off,
-                        color: Colors.white,
-                      ),
+                      elevation: 8,
+                    ),
+                    child: const Icon(Icons.cameraswitch, color: Colors.white),
+                  ),
+                  ElevatedButton(
+                    onPressed: _toggleTorch,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDark
+                          ? const Color(0xFF2D2D2D)
+                          : const Color(0xFFFFFFFF),
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(12.0),
+                      elevation: 8,
+                    ),
+                    child: Icon(
+                      _isTorchOn ? Icons.flash_on : Icons.flash_off,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -456,30 +436,23 @@ class _HomeScannerScreenState extends State<HomeScannerScreen> {
             left: 0,
             right: 0,
             child: Center(
-              child: NeumorphicButton(
+              child: ElevatedButton(
                 onPressed: () {
                   // This will be handled by bottom navigation
                 },
-                style: NeumorphicStyle(
-                  shape: NeumorphicShape.convex,
-                  boxShape: NeumorphicBoxShape.circle(),
-                  depth: 12,
-                  intensity: 0.8,
-                  color: isDark
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isDark
                       ? const Color(0xFF2D2D2D)
                       : const Color(0xFFFFFFFF),
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(0),
+                  minimumSize: const Size(70, 70),
+                  elevation: 12,
                 ),
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.photo_library,
-                    color: AppTheme.primaryColor,
-                    size: 32,
-                  ),
+                child: Icon(
+                  Icons.photo_library,
+                  color: AppTheme.primaryColor,
+                  size: 32,
                 ),
               ),
             ),
