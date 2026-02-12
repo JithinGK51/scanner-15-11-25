@@ -12,11 +12,15 @@ class Helpers {
   }
 
   static Future<bool> launchURL(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      return await launchUrl(uri, mode: LaunchMode.externalApplication);
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        return await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   static bool isValidURL(String url) {

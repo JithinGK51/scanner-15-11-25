@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import '../models/scan_history_item.dart';
 import '../services/hive_service.dart';
@@ -130,17 +130,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Neumorphic(
-                        style: NeumorphicStyle(
-                          shape: NeumorphicShape.flat,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(20),
-                          ),
-                          depth: -4,
-                          intensity: 0.8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
                           color: isDark
                               ? const Color(0xFF2D2D2D)
                               : const Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              color: isDark
+                                  ? Colors.black.withOpacity(0.2)
+                                  : Colors.grey.withOpacity(0.2),
+                              blurRadius: 4,
+                              offset: const Offset(0, -2),
+                            ),
+                          ],
                         ),
                         child: TextField(
                           controller: _searchController,
@@ -160,7 +164,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    NeumorphicButton(
+                    ElevatedButton(
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
@@ -168,16 +172,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           builder: (context) => _buildSortBottomSheet(isDark),
                         );
                       },
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.convex,
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          BorderRadius.circular(15),
-                        ),
-                        depth: 8,
-                        intensity: 0.8,
-                        color: isDark
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDark
                             ? const Color(0xFF2D2D2D)
                             : const Color(0xFFFFFFFF),
+                        foregroundColor: AppTheme.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 8,
+                        padding: const EdgeInsets.all(12),
                       ),
                       child: const Padding(
                         padding: EdgeInsets.all(12.0),
@@ -238,17 +242,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           onDismissed: (direction) {
                             _deleteItem(item.id);
                           },
-                          child: Neumorphic(
-                            style: NeumorphicStyle(
-                              shape: NeumorphicShape.convex,
-                              boxShape: NeumorphicBoxShape.roundRect(
-                                BorderRadius.circular(20),
-                              ),
-                              depth: 8,
-                              intensity: 0.8,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
                               color: isDark
                                   ? const Color(0xFF2D2D2D)
                                   : const Color(0xFFFFFFFF),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: isDark
+                                      ? Colors.black.withOpacity(0.2)
+                                      : Colors.grey.withOpacity(0.2),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
                             child: ListTile(
                               leading: Container(
@@ -304,20 +312,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
               if (_filteredItems.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: NeumorphicButton(
+                  child: ElevatedButton(
                     onPressed: _clearAllHistory,
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        BorderRadius.circular(15),
-                      ),
-                      depth: 8,
-                      intensity: 0.8,
-                      color: Colors.red.withValues(alpha: 0.1),
-                    ),
-                    child: Container(
-                      width: double.infinity,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red.withValues(alpha: 0.1),
+                      foregroundColor: Colors.red,
                       padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: const SizedBox(
+                      width: double.infinity,
                       child: Center(
                         child: Text(
                           'Clear All History',
@@ -339,15 +346,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildSortBottomSheet(bool isDark) {
-    return Neumorphic(
-      style: NeumorphicStyle(
-        shape: NeumorphicShape.flat,
-        boxShape: NeumorphicBoxShape.roundRect(
-          const BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        depth: 20,
-        intensity: 0.8,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
+        ],
       ),
       child: Container(
         padding: const EdgeInsets.all(24),
@@ -376,7 +387,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final isSelected = _sortBy == value;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
-      child: NeumorphicButton(
+      child: ElevatedButton(
         onPressed: () {
           setState(() {
             _sortBy = value;
@@ -384,20 +395,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
           _sortHistory();
           Navigator.pop(context);
         },
-        style: NeumorphicStyle(
-          shape: NeumorphicShape.convex,
-          boxShape: NeumorphicBoxShape.roundRect(
-            BorderRadius.circular(15),
-          ),
-          depth: isSelected ? 8 : 4,
-          intensity: 0.8,
-          color: isSelected
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isSelected
               ? AppTheme.primaryColor.withValues(alpha: 0.2)
               : (isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF)),
-        ),
-        child: Container(
-          width: double.infinity,
+          foregroundColor: isSelected
+              ? AppTheme.primaryColor
+              : (isDark ? Colors.white : Colors.black87),
           padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: isSelected ? 8 : 4,
+        ),
+        child: SizedBox(
+          width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

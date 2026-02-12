@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import '../services/hive_service.dart';
@@ -205,69 +205,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                NeumorphicButton(
+                ElevatedButton(
                   onPressed: _exportHistory,
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(15),
-                    ),
-                    depth: 8,
-                    intensity: 0.8,
-                    color: isDark
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
-                  ),
-                  child: Container(
-                    width: double.infinity,
+                    foregroundColor: AppTheme.primaryColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.upload, color: AppTheme.primaryColor),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Export History',
-                          style: TextStyle(
-                            color: AppTheme.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                    elevation: 8,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.upload, color: AppTheme.primaryColor),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Export History',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 12),
-                NeumorphicButton(
+                ElevatedButton(
                   onPressed: _deleteAllData,
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(15),
-                    ),
-                    depth: 8,
-                    intensity: 0.8,
-                    color: Colors.red.withValues(alpha: 0.1),
-                  ),
-                  child: Container(
-                    width: double.infinity,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red.withValues(alpha: 0.1),
+                    foregroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.delete_forever, color: Colors.red),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Delete All Data',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                    elevation: 8,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.delete_forever, color: Colors.red),
+                      SizedBox(width: 12),
+                      Text(
+                        'Delete All Data',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -286,15 +277,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Widget? trailing,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Neumorphic(
-      style: NeumorphicStyle(
-        shape: NeumorphicShape.convex,
-        boxShape: NeumorphicBoxShape.roundRect(
-          BorderRadius.circular(20),
-        ),
-        depth: 8,
-        intensity: 0.8,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
         color: isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: ListTile(
         leading: Container(
@@ -328,16 +323,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return NeumorphicSwitch(
+    return Switch(
       value: value,
       onChanged: onChanged,
-      style: NeumorphicSwitchStyle(
-        activeTrackColor: AppTheme.primaryColor,
-        inactiveTrackColor: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE0E0E0),
-        activeThumbColor: Colors.white,
-        inactiveThumbColor: Colors.white,
-      ),
+      activeColor: AppTheme.primaryColor,
     );
   }
 }

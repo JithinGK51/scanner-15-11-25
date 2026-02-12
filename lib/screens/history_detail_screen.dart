@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import '../models/scan_history_item.dart';
 import '../services/hive_service.dart';
@@ -42,17 +42,28 @@ class HistoryDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Code preview
-                Neumorphic(
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(30),
-                    ),
-                    depth: 20,
-                    intensity: 0.8,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
                     color: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.grey.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(-5, -5),
+                      ),
+                      BoxShadow(
+                        color: isDark
+                            ? Colors.black.withOpacity(0.3)
+                            : Colors.grey.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(5, 5),
+                      ),
+                    ],
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(32),
@@ -88,17 +99,21 @@ class HistoryDetailScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 // Data container
-                Neumorphic(
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.flat,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(20),
-                    ),
-                    depth: -4,
-                    intensity: 0.8,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
                     color: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark
+                            ? Colors.black.withOpacity(0.2)
+                            : Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, -2),
+                      ),
+                    ],
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -140,69 +155,61 @@ class HistoryDetailScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: NeumorphicButton(
+                      child: ElevatedButton(
                         onPressed: () => _handleCopy(context),
-                        style: NeumorphicStyle(
-                          shape: NeumorphicShape.convex,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15),
-                          ),
-                          depth: 8,
-                          intensity: 0.8,
-                          color: isDark
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDark
                               ? const Color(0xFF2D2D2D)
                               : const Color(0xFFFFFFFF),
-                        ),
-                        child: Padding(
+                          foregroundColor: AppTheme.primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.copy, color: AppTheme.primaryColor),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Copy',
-                                style: TextStyle(
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          elevation: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.copy, color: AppTheme.primaryColor),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Copy',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: NeumorphicButton(
+                      child: ElevatedButton(
                         onPressed: () => _handleShare(context),
-                        style: NeumorphicStyle(
-                          shape: NeumorphicShape.convex,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15),
-                          ),
-                          depth: 8,
-                          intensity: 0.8,
-                          color: isDark
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDark
                               ? const Color(0xFF2D2D2D)
                               : const Color(0xFFFFFFFF),
-                        ),
-                        child: Padding(
+                          foregroundColor: AppTheme.primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.share, color: AppTheme.primaryColor),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Share',
-                                style: TextStyle(
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          elevation: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.share, color: AppTheme.primaryColor),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Share',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -212,67 +219,60 @@ class HistoryDetailScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: NeumorphicButton(
+                      child: ElevatedButton(
                         onPressed: () => _handleOpen(context),
-                        style: NeumorphicStyle(
-                          shape: NeumorphicShape.convex,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15),
-                          ),
-                          depth: 8,
-                          intensity: 0.8,
-                          color: isDark
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDark
                               ? const Color(0xFF2D2D2D)
                               : const Color(0xFFFFFFFF),
-                        ),
-                        child: Padding(
+                          foregroundColor: AppTheme.primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.open_in_new, color: AppTheme.primaryColor),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Open',
-                                style: TextStyle(
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          elevation: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.open_in_new, color: AppTheme.primaryColor),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Open',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: NeumorphicButton(
+                      child: ElevatedButton(
                         onPressed: () => _handleDelete(context),
-                        style: NeumorphicStyle(
-                          shape: NeumorphicShape.convex,
-                          boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.circular(15),
-                          ),
-                          depth: 8,
-                          intensity: 0.8,
-                          color: Colors.red.withValues(alpha: 0.1),
-                        ),
-                        child: Padding(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red.withValues(alpha: 0.1),
+                          foregroundColor: Colors.red,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.delete, color: Colors.red),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
+                          elevation: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.delete, color: Colors.red),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -304,34 +304,75 @@ class HistoryDetailScreen extends StatelessWidget {
 
   Future<void> _handleOpen(BuildContext context) async {
     if (Helpers.isValidURL(item.data)) {
-      final launched = await Helpers.launchURL(item.data);
-      if (!launched && context.mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          title: 'Error',
-          desc: 'Could not open URL',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(item.data);
+        if (!launched && context.mounted) {
+          _showErrorDialog(context, 'Could not open URL. Please check if the URL is valid or try again.');
+        }
+      } catch (e) {
+        if (context.mounted) {
+          _showErrorDialog(context, 'Could not open URL. Please check if the URL is valid or try again.');
+        }
       }
     } else if (Helpers.isUPI(item.data)) {
-      final launched = await Helpers.launchURL(item.data);
-      if (!launched && context.mounted) {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.info,
-          title: 'UPI Payment',
-          desc: 'Please use a UPI app to process this payment',
-        ).show();
+      try {
+        final launched = await Helpers.launchURL(item.data);
+        if (!launched && context.mounted) {
+          _showInfoDialog(context, 'UPI Payment', 'Please use a UPI app to process this payment');
+        }
+      } catch (e) {
+        if (context.mounted) {
+          _showInfoDialog(context, 'UPI Payment', 'Please use a UPI app to process this payment');
+        }
       }
     } else {
       if (!context.mounted) return;
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.info,
-        title: 'Text Content',
-        desc: item.data,
-      ).show();
+      _showInfoDialog(context, 'Text Content', item.data);
     }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 28),
+            SizedBox(width: 12),
+            Text('Error', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showInfoDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _handleDelete(BuildContext context) async {

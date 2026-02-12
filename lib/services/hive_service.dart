@@ -9,11 +9,17 @@ class HiveService {
   static const String soundKey = 'sound_enabled';
   static const String vibrationKey = 'vibration_enabled';
 
+  static bool _isInitialized = false;
+
   static Future<void> init() async {
+    if (_isInitialized) return;
+    
     await Hive.initFlutter();
     Hive.registerAdapter(ScanHistoryItemAdapter());
     await Hive.openBox<ScanHistoryItem>(historyBoxName);
     await Hive.openBox(settingsBoxName);
+    
+    _isInitialized = true;
   }
 
   static Box<ScanHistoryItem> get historyBox =>

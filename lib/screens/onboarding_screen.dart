@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import '../services/hive_service.dart';
 import '../services/permission_service.dart';
@@ -104,29 +104,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _buildPageIndicator(isDark),
               Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: NeumorphicButton(
+                child: ElevatedButton(
                   onPressed: _nextPage,
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.convex,
-                    boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.circular(30),
-                    ),
-                    depth: 8,
-                    intensity: 0.8,
-                    color: isDark
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDark
                         ? const Color(0xFF2D2D2D)
                         : const Color(0xFFFFFFFF),
-                  ),
-                  child: Container(
-                    width: double.infinity,
+                    foregroundColor: AppTheme.primaryColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 8,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
                     child: Center(
                       child: Text(
                         _currentPage == 2 ? 'Allow & Continue' : 'Next',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryColor,
                         ),
                       ),
                     ),
@@ -146,53 +144,62 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Neumorphic(
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.convex,
-              boxShape: NeumorphicBoxShape.roundRect(
-                BorderRadius.circular(30),
-              ),
-              depth: 20,
-              intensity: 0.8,
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
               color: isDark
                   ? const Color(0xFF2D2D2D)
                   : const Color(0xFFFFFFFF),
+              boxShadow: [
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(-5, -5),
+                ),
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(5, 5),
+                ),
+              ],
             ),
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Icon(
-                Icons.qr_code_scanner,
-                size: 100,
-                color: AppTheme.primaryColor,
-              ),
+            child: Icon(
+              Icons.qr_code_scanner,
+              size: 100,
+              color: AppTheme.primaryColor,
             ),
           ),
           const SizedBox(height: 40),
-          NeumorphicText(
+          Text(
             'All-in-One Scanner',
-            style: NeumorphicStyle(
-              depth: 4,
-              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
-            ),
-            textStyle: const NeumorphicTextStyle(
+            style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
+              shadows: [
+                Shadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 16),
-          NeumorphicText(
+          Text(
             'Scan anything instantly',
-            style: NeumorphicStyle(
-              depth: 2,
-              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF757575),
-            ),
-            textStyle: const NeumorphicTextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w300,
+              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF757575),
             ),
           ),
         ],
@@ -213,15 +220,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          NeumorphicText(
+          Text(
             'Features',
-            style: NeumorphicStyle(
-              depth: 4,
-              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
-            ),
-            textStyle: const NeumorphicTextStyle(
+            style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: isDark ? const Color(0xFFFFFFFF) : const Color(0xFF212121),
+              shadows: [
+                Shadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 40),
@@ -232,17 +245,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 final feature = features[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child: Neumorphic(
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.convex,
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        BorderRadius.circular(20),
-                      ),
-                      depth: 8,
-                      intensity: 0.8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                       color: isDark
                           ? const Color(0xFF2D2D2D)
                           : const Color(0xFFFFFFFF),
+                      boxShadow: [
+                        BoxShadow(
+                          color: isDark
+                              ? Colors.black.withOpacity(0.2)
+                              : Colors.grey.withOpacity(0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: ListTile(
                       leading: Icon(
@@ -280,47 +297,56 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Neumorphic(
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.convex,
-              boxShape: NeumorphicBoxShape.roundRect(
-                BorderRadius.circular(30),
-              ),
-              depth: 20,
-              intensity: 0.8,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
               color: isDark
                   ? const Color(0xFF2D2D2D)
                   : const Color(0xFFFFFFFF),
+              boxShadow: [
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(-5, -5),
+                ),
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(5, 5),
+                ),
+              ],
             ),
-            child: Container(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.security,
-                    size: 80,
-                    color: AppTheme.primaryColor,
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.security,
+                  size: 80,
+                  color: AppTheme.primaryColor,
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Permissions',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black87,
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Permissions',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'We need camera and storage permissions to scan codes and save your history.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: isDark ? Colors.white70 : Colors.black54,
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'We need camera and storage permissions to scan codes and save your history.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isDark ? Colors.white70 : Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -334,30 +360,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       children: List.generate(3, (index) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Neumorphic(
-            style: NeumorphicStyle(
-              shape: NeumorphicShape.convex,
-              boxShape: NeumorphicBoxShape.circle(),
-              depth: _currentPage == index ? 8 : 2,
-              intensity: 0.8,
+          child: Container(
+            width: _currentPage == index ? 24 : 12,
+            height: 12,
+            decoration: BoxDecoration(
+              shape: _currentPage == index
+                  ? BoxShape.rectangle
+                  : BoxShape.circle,
+              borderRadius: _currentPage == index
+                  ? BorderRadius.circular(6)
+                  : null,
               color: _currentPage == index
                   ? AppTheme.primaryColor
                   : (isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF)),
-            ),
-            child: Container(
-              width: _currentPage == index ? 24 : 12,
-              height: 12,
-              decoration: BoxDecoration(
-                shape: _currentPage == index
-                    ? BoxShape.rectangle
-                    : BoxShape.circle,
-                borderRadius: _currentPage == index
-                    ? BorderRadius.circular(6)
-                    : null,
-                color: _currentPage == index
-                    ? AppTheme.primaryColor
-                    : (isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF)),
-              ),
+              boxShadow: [
+                BoxShadow(
+                  color: (_currentPage == index
+                          ? AppTheme.primaryColor
+                          : (isDark ? const Color(0xFF2D2D2D) : const Color(0xFFFFFFFF)))
+                      .withOpacity(0.3),
+                  blurRadius: _currentPage == index ? 8 : 2,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
           ),
         );
@@ -366,49 +391,4 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-// NeumorphicText widget
-class NeumorphicText extends StatelessWidget {
-  final String text;
-  final NeumorphicStyle style;
-  final NeumorphicTextStyle textStyle;
-
-  const NeumorphicText(
-    this.text, {
-    super.key,
-    required this.style,
-    required this.textStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Neumorphic(
-      style: style,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: textStyle.fontSize,
-            fontWeight: textStyle.fontWeight,
-            letterSpacing: textStyle.letterSpacing,
-            color: style.color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// NeumorphicTextStyle helper
-class NeumorphicTextStyle {
-  final double fontSize;
-  final FontWeight fontWeight;
-  final double letterSpacing;
-
-  const NeumorphicTextStyle({
-    required this.fontSize,
-    required this.fontWeight,
-    this.letterSpacing = 0,
-  });
-}
 
